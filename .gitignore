@@ -128,7 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+
 .venv
 env/
 venv/
@@ -159,6 +159,12 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+#terraform
+terraform/.terraform.lock.hcl
+terraform/.terraform/
+terraform.tfstate
+terraform.tfstate.backup
 
 # PyCharm
 #  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can

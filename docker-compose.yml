@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14.5-alpine
+    container_name: postgres
+    volumes:
+      - ./pg_data:/var/lib/postgresql/pg_data
+    expose:
+      - 5432
+    env_file:
+      - ./.env_db
+    restart: always
+
+  boihut:
+    build: .
+    container_name: boihut
+    depends_on:
+      - postgres
+    env_file:
+      - ./.env_app
+    expose:
+      - 5000
+    restart: always
+
+  nginx:
+    build: ./nginx
+    ports: 
+      - 80:80
+    container_name: nginx
+    depends_on:
+      - boihut
+    restart: always

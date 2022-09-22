@@ -1,6 +1,16 @@
+asgiref==3.5.2
+certifi==2022.6.15
+chardet==4.0.0
 Django==3.2.11
 django-mathfilters==1.0.0
+gunicorn==20.1.0
+idna==2.10
+Pillow==8.0.1
+psycopg2==2.9.3
+python-dotenv==0.21.0
+pytz==2022.2.1
 regex==2020.11.13
 requests==2.25.1
-Pillow==8.0.1
+sqlparse==0.4.2
+urllib3==1.26.12
 whitenoise==6.0.0
