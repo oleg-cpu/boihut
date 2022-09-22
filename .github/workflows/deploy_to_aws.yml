@@ -1,0 +1,45 @@
+name: Push-to-EC2
+
+# Trigger deployment only on push to master branch
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to EC2 on master branch push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the filess
+        uses: actions/checkout@v2
+      - name: install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.EC2_SSH_KEY }}
+          known_hosts: unnecessary
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT}} -H ${{ secrets.HOST }}  >> ~/.ssh/known_hosts
+      - name: Deploy to ec2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            if [ -d "/$HOME/boihut" ]
+            then
+              cd /$HOME/boihut/
+              docker-compose down && docker system prune -a -f
+              cd ..
+              rm -rf "/$HOME/boihut/" 
+              git clone https://github.com/oleg-cpu/boihut.git
+              cd /$HOME/boihut/
+              docker-compose up -d
+            else
+              git clone https://github.com/oleg-cpu/boihut.git 
+              cd /$HOME/boihut/
+              docker-compose up -d
+            fi
